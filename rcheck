@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'curb'
+require 'json'
+require 'yaml'
+
+abort "Arguments: target test city" if ARGV.empty?
+
+$clientid='aLongStringOfDigits'
+$token='aLongerStringOfDigits'
+
+$site=ARGV[0]
+$service=ARGV[1]
+$source=ARGV[2]
+
+def listendpoints()
+    e = Curl::Easy.perform("http://api.wheresitup.com/v0/sources") do |curl| 
+      curl.headers['Content-Type'] = 'application/json'
+      curl.headers['Auth'] = "Bearer #{$clientid} #{$token}"
+    end
+  e.perform
+  json=JSON.parse(e.body_str)
+  sources=json["sources"]
+  endpoints = sources["name"]
+  puts endpoints
+end
+
+def submitjob()
+  postdata="{\"uri\":\"http://#{$site}\",\"services\":[\"#{$service}\"],\"source\":[\"#{$source}\"]}"
+    c = Curl::Easy.http_post('http://api.wheresitup.com/v0/submit',"#{postdata}" ) do |curl| 
+      curl.headers['Content-Type'] = 'application/json'
+      curl.headers['Auth'] = "Bearer #{$clientid} #{$token}"
+      curl.follow_location = true 
+      curl.max_redirects = 5 
+      curl.connect_timeout = 5 
+      curl.timeout = 5 
+    end 
+  c.perform
+  json=JSON.parse(c.body_str)
+  $id=json['jobID']
+end
+
+def getresults()
+    r = Curl::Easy.perform("http://api.wheresitup.com/v0/retrieve/#{$id}") do |curl| 
+      curl.headers["User-Agent"] = "myapp-0.0"
+      curl.headers['Content-Type'] = 'application/json'
+      curl.headers['Auth'] = "Bearer #{$clientid} #{$token}"
+    end
+  r.perform
+  json=JSON.parse(r.body_str)
+  $ret=json["return"]			# used in return output
+  $raw=$ret["raw"]			# used in return output
+  location=$ret["summary"]		# used in progress test
+  $status=location["#{$source}"]	# used in progress test
+end
+
+submitjob				# send request to endpoint
+getresults				# try initial results retrieval so the until loop will be prepopulated.
+  until $status["#{$service}"] != "in progress"
+    sleep 1
+    getresults
+  end
+
+# puts "=============================================="
+# puts $raw["request"].to_yaml line_width: -1
+puts "=============================================="
+puts $ret["summary"].to_yaml line_width: -1
