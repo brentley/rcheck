@@ -11,4 +11,5 @@ Usage
 -----
     rcheck target test city
 e.g.
+
     rcheck www.google.com trace seattle
