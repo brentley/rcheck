@@ -64,5 +64,4 @@ getresults				# try initial results retrieval so the until loop will be prepopul
 
 # puts "=============================================="
 # puts $raw["request"].to_yaml line_width: -1
-puts "=============================================="
 puts $ret["summary"].to_yaml line_width: -1
