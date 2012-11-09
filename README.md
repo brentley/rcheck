@@ -146,3 +146,63 @@ e.g.
         - 147.972 ms
         - 149.974 ms
         - 1
+
+    rcheck www.google.com ping seattle 
+    ---
+    seattle:
+      ping:
+        pings: []
+        summary:
+          transmitted: '10'
+          received: '10'
+          packetloss: 0%
+          time: 4501ms
+          min: '147.449'
+          avg: '148.097'
+          max: '148.662'
+          mdev: 0.532 ms
+    
+    rcheck www.google.com http seattle
+    ---
+    seattle:
+      http:
+      - responseCode: 200
+        responseStatus: OK
+        serverIP: 74.125.132.99
+        timingConnected: '0.148743'
+        timingResponse: '0.306805'
+        timingRequest: '0.306947'
+    
+    rcheck www.google.com dig seattle 
+    ==============================================
+    ---
+    seattle:
+      dig:
+        question:
+        - domain: www.google.com.
+          type: A
+        answer:
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.99
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.105
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.106
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.103
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.147
+        - domain: www.google.com.
+          type: A
+          ttl: '99'
+          ip: 74.125.132.104
