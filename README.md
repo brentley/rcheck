@@ -9,8 +9,6 @@ rcheck requires the *curb*, *json*, and *yaml* gems.
 
 Usage
 -----
-///
-rcheck target test city
+    rcheck target test city
 e.g.
-rcheck www.google.com trace seattle
-///
+    rcheck www.google.com trace seattle
