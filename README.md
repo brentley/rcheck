@@ -13,6 +13,7 @@ Usage
 e.g.
 
 Ping summary:
+
     rcheck www.google.com ping seattle 
     ---
     seattle:
@@ -29,6 +30,7 @@ Ping summary:
           mdev: 0.532 ms
     
 HTTP response info:
+
     rcheck www.google.com http seattle
     ---
     seattle:
@@ -41,6 +43,7 @@ HTTP response info:
         timingRequest: '0.306947'
 
 Dig output:
+
     rcheck www.google.com dig seattle 
     ---
     seattle:
@@ -75,6 +78,7 @@ Dig output:
           ip: 74.125.132.104
 
 Traceroute example:
+
     rcheck www.google.com trace seattle
     ---
     seattle:
